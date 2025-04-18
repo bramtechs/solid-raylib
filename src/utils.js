@@ -22,3 +22,19 @@ export function parseNumber(it) {
   }
   return it;
 }
+
+/**
+ * Parses a boolean value or function
+ * @param {boolean|function} value - Boolean value or function that returns a boolean
+ * @param {boolean} defaultValue - Default value if undefined
+ * @returns {boolean}
+ */
+export function parseBoolean(value, defaultValue = false) {
+  if (value === undefined) {
+    return defaultValue;
+  }
+  if (typeof value === "function") {
+    return value();
+  }
+  return !!value;
+}

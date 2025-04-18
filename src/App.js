@@ -13,7 +13,16 @@ export default function App() {
       <fps x={10} y={10} />
       <rectangle x={() => 490 - 100 * Math.cos(count())} y={100} width={300} height={100} color="red"></rectangle>
       <rectangle x={() => 490 - 200 * Math.cos(count())} y={200} width={300} height={100} color="blue"></rectangle>
-      <rectangle x={() => 490 - 300 * Math.cos(count())} y={300} width={300} height={100} color="green"></rectangle>
+      <rectangle
+        x={() => 490 - 300 * Math.cos(count())}
+        y={300}
+        width={300}
+        height={100}
+        lines={true}
+        borderRadius={0.4}
+        lineThickness={5}
+        color="green"
+      ></rectangle>
       <rectangle x={() => 490 - 400 * Math.cos(count())} y={400} width={300} height={100} color="yellow"></rectangle>
     </window>
   );

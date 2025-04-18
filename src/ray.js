@@ -1,5 +1,5 @@
 import { VElement } from "./node.js";
-import { parseColor, parseNumber } from "./utils.js";
+import { parseColor, parseNumber, parseBoolean } from "./utils.js";
 import { render } from "./renderer.js";
 import raylib from "raylib/index.js";
 
@@ -84,17 +84,77 @@ export async function initSolidRaylib(jsx) {
    * @param {VElement} node
    */
   function drawNode(node) {
-    if (node.content.elementType === "rectangle") {
-      raylib.DrawRectangle(
-        parseNumber(node.attributes.x),
-        parseNumber(node.attributes.y),
-        parseNumber(node.attributes.width),
-        parseNumber(node.attributes.height),
-        parseColor(node.attributes.color),
-      );
-    } else if (node.content.elementType === "fps") {
-      raylib.DrawFPS(parseNumber(node.attributes.x), parseNumber(node.attributes.y));
+    switch (node.content.elementType) {
+      case "rectangle":
+        if (parseBoolean(node.attributes.lines)) {
+          // Draw rectangle lines/outline
+          if (node.attributes.borderRadius === undefined) {
+            const lineThickness = parseNumber(node.attributes.lineThickness ?? 1);
+            if (lineThickness === 1) {
+              // Use the simple API for 1px lines
+              raylib.DrawRectangleLines(
+                parseNumber(node.attributes.x),
+                parseNumber(node.attributes.y),
+                parseNumber(node.attributes.width),
+                parseNumber(node.attributes.height),
+                parseColor(node.attributes.color),
+              );
+            } else {
+              // Use the advanced API for custom thickness
+              raylib.DrawRectangleLinesEx(
+                raylib.Rectangle(
+                  parseNumber(node.attributes.x),
+                  parseNumber(node.attributes.y),
+                  parseNumber(node.attributes.width),
+                  parseNumber(node.attributes.height),
+                ),
+                lineThickness,
+                parseColor(node.attributes.color),
+              );
+            }
+          } else {
+            raylib.DrawRectangleRoundedLines(
+              raylib.Rectangle(
+                parseNumber(node.attributes.x),
+                parseNumber(node.attributes.y),
+                parseNumber(node.attributes.width),
+                parseNumber(node.attributes.height),
+              ),
+              parseNumber(node.attributes.borderRadius),
+              parseNumber(node.attributes.segments ?? 5),
+              parseNumber(node.attributes.lineThickness ?? 1),
+              parseColor(node.attributes.color),
+            );
+          }
+        } else {
+          if (node.attributes.borderRadius === undefined) {
+            raylib.DrawRectangle(
+              parseNumber(node.attributes.x),
+              parseNumber(node.attributes.y),
+              parseNumber(node.attributes.width),
+              parseNumber(node.attributes.height),
+              parseColor(node.attributes.color),
+            );
+          } else {
+            raylib.DrawRectangleRounded(
+              raylib.Rectangle(
+                parseNumber(node.attributes.x),
+                parseNumber(node.attributes.y),
+                parseNumber(node.attributes.width),
+                parseNumber(node.attributes.height),
+              ),
+              parseNumber(node.attributes.borderRadius),
+              parseNumber(node.attributes.segments ?? 5),
+              parseColor(node.attributes.color),
+            );
+          }
+        }
+        break;
+      case "fps":
+        raylib.DrawFPS(parseNumber(node.attributes.x), parseNumber(node.attributes.y));
+        break;
     }
+
     node.childNodes.forEach((child) => {
       drawNode(child);
     });
