@@ -28,7 +28,7 @@ const VNodeTypes = [
 /**
  * Virtual node based on DOM Node
  */
-export class VNode {
+export class VElement {
   // Node properties
   /**
    * Reference to the content (e.g. Mesh class in ThreeJS)
@@ -37,27 +37,27 @@ export class VNode {
   content;
 
   /**
-   * @type {VNode|null}
+   * @type {VElement|null}
    */
   parentNode;
 
   /**
-   * @type {VNode}
+   * @type {VElement}
    */
   nextSibling;
 
   /**
-   * @type {VNode}
+   * @type {VElement}
    */
   prevSibling;
 
   /**
-   * @type {VNode[]}
+   * @type {VElement[]}
    */
   childNodes;
 
   /**
-   * @type {VNode}
+   * @type {VElement}
    */
   firstChild;
 
@@ -76,9 +76,28 @@ export class VNode {
    */
   parentElement;
 
+  /** @type {Object.<string, string>} */
+  attributes = {};
+
+  /**
+   * @param {string} name
+   * @param {string} value
+   */
+  setAttribute(name, value) {
+    this.attributes[name] = value;
+  }
+
+  /**
+   * @param {string} name
+   * @returns {string}
+   */
+  getAttribute(name) {
+    return this.attributes[name];
+  }
+
   /**
    * @param {any} content
-   * @param {VNode|null} parent
+   * @param {VElement|null} parent
    * @param {VNodeTypes} type
    * @param {ThreeParents} [parentElement]
    */
@@ -93,28 +112,28 @@ export class VNode {
 
   // Methods for exposing private properties to parents
   /**
-   * @param {VNode} node
+   * @param {VElement} node
    */
   updateNextSibling(node) {
     this.nextSibling = node;
   }
 
   /**
-   * @param {VNode} node
+   * @param {VElement} node
    */
   updatePreviousSibling(node) {
     this.prevSibling = node;
   }
 
   /**
-   * @param {VNode} node
+   * @param {VElement} node
    */
   appendChild(node) {
     this.childNodes = [...this.childNodes, node];
   }
 
   /**
-   * @param {VNode} node
+   * @param {VElement} node
    */
   setParentNode(node) {
     this.parentNode = node;
@@ -130,9 +149,9 @@ export class VNode {
   // Inserts node before the anchor node
   // If no node is provided, node is inserted as last child
   /**
-   * @param {VNode} node
-   * @param {VNode|null} anchor
-   * @returns {VNode}
+   * @param {VElement} node
+   * @param {VElement|null} anchor
+   * @returns {VElement}
    */
   insertBefore(node, anchor) {
     // Set this node as the parent to the incoming node
@@ -166,68 +185,26 @@ export class VNode {
         // If the index is 0, we need to also update firstChild property
         if (anchorIndex === 0) this.firstChild = node;
 
-        // ThreeJS: Add element to Scene
-        node.addToParentElement();
-
         return this;
       }
     }
+
     this.childNodes = [...this.childNodes, node];
-
-    // ThreeJS: Add element to Scene
-    node.addToParentElement();
-
     return this;
   }
 
   /**
-   * @param {VNode} node
-   * @returns {VNode}
+   * @param {VElement} node
+   * @returns {VElement}
    */
   removeChild(node) {
     this.childNodes = this.childNodes.filter((childNode) => node != childNode);
-
-    // ThreeJS: Remove from Scene
-    node.removeFromParentElement();
-
+    node.content.deinit?.();
     return this;
-  }
-
-  // ThreeJS specific
-  addToParentElement() {
-    this.parentElement.add(this.content);
-  }
-  removeFromParentElement() {
-    this.parentElement.remove(this.content);
   }
 
   // Maybe not necessary
   hasChildNodes() {
     return this.childNodes.length > 0;
-  }
-}
-
-/**
- * Virtual Element - based on DOM Element.
- * Should be used for most things on a page.
- */
-export class VElement extends VNode {
-  /** @type {Object.<string, string>} */
-  attributes = {};
-
-  /**
-   * @param {string} name
-   * @param {string} value
-   */
-  setAttribute(name, value) {
-    this.attributes[name] = value;
-  }
-
-  /**
-   * @param {string} name
-   * @returns {string}
-   */
-  getAttribute(name) {
-    return this.attributes[name];
   }
 }

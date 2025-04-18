@@ -1,4 +1,5 @@
 import { createRenderer } from "solid-js/universal";
+import { createRayElement, elementAttributeUpdated } from "./ray.js";
 
 export const {
   render,
@@ -13,14 +14,14 @@ export const {
   mergeProps,
 } = createRenderer({
   createElement(type) {
-    console.debug("createElement", type);
-    throw new Error("createElement not implemented");
+    return createRayElement(type);
   },
   replaceText(textNode, value) {
     textNode.content = value;
   },
   setProperty(node, name, value) {
     node.setAttribute(name, value);
+    elementAttributeUpdated(node, name, value);
   },
   insertNode(parent, node, anchor) {
     console.log("render", parent, node, node.childNodes[0], node.content);

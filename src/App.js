@@ -1,9 +1,8 @@
-import { onCleanup } from "solid-js";
+import { mainLoop } from "./ray.js";
 
 export default function App() {
-  onCleanup(() => {
-    r.CloseWindow();
+  mainLoop().then(() => {
+    console.log("window closed");
   });
-
-  return <window></window>;
+  return <window width={1280} height={720} title="Raylib App"></window>;
 }
