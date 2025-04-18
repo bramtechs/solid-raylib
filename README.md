@@ -1,10 +1,11 @@
 # Solid Raylib
 
-This project demonstrates a custom renderer for SolidJS that integrates with the Raylib graphics library. It is mainly meant for making game GUIs.
+This project demonstrates a custom renderer for SolidJS that integrates with the Raylib graphics library.<br/>
+It is being built as an experimental GUI solution for [Doomhowl Interactive](https://doomhowl-interactive.com).
 
 Very work in progress.
 
-![](./misc/image.png)
+---
 
 App.js
 
@@ -31,8 +32,12 @@ export default function App() {
 }
 ```
 
+![](./misc/image.png)
+
 ## References
 
 https://youtu.be/Yi_MJ8cVCCs
+
+https://github.com/RobLoach/node-raylib
 
 https://github.com/whoisryosuke/solid-three-renderer
