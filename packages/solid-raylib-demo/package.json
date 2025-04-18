@@ -1,0 +1,25 @@
+{
+  "name": "solid-raylib-demo",
+  "version": "0.1.0",
+  "type": "module",
+  "description": "SolidJS renderer for Raylib - Demo Application",
+  "main": "dist/index.js",
+  "private": true,
+  "scripts": {
+    "build": "rimraf dist && babel src --out-dir dist",
+    "start": "npm run build && node dist/index.js"
+  },
+  "dependencies": {
+    "raylib": "^0.14.0",
+    "solid-js": "^1.9.5",
+    "solid-raylib-core": "*"
+  },
+  "keywords": [
+    "solid",
+    "solidjs",
+    "raylib",
+    "renderer",
+    "demo"
+  ],
+  "license": "ISC"
+}

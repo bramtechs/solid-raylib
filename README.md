@@ -1,17 +1,42 @@
-# Solid Raylib
+# Solid Raylib - Monorepo
 
 This project demonstrates a custom renderer for SolidJS that integrates with the Raylib graphics library.<br/>
 It is being built as an experimental GUI solution for [Doomhowl Interactive](https://doomhowl-interactive.com).
 
 Very work in progress.
 
----
+## Project Structure
 
-App.js
+This is a monorepo containing:
+
+- `packages/solid-raylib-core` - The core renderer library
+- `packages/solid-raylib-demo` - A demo application showcasing the renderer
+
+## Getting Started
+
+### Install Dependencies
+
+```bash
+npm install
+```
+
+### Build the Core Library
+
+```bash
+npm run build:core
+```
+
+### Run the Demo
+
+```bash
+npm run start:demo
+```
+
+## Example Code
 
 ```jsx
 import { createSignal } from "solid-js";
-import { onFrame } from "./ray.js";
+import { onFrame } from "solid-raylib-core";
 
 export default function App() {
   const [count, setCount] = createSignal(0);

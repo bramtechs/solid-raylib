@@ -1,0 +1,34 @@
+{
+  "name": "solid-raylib-core",
+  "version": "0.1.0",
+  "type": "module",
+  "description": "SolidJS renderer for Raylib - Core Library",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "rimraf dist && babel src --out-dir dist",
+    "prepublishOnly": "npm run build"
+  },
+  "dependencies": {
+    "raylib": "^0.14.0",
+    "solid-js": "^1.9.5"
+  },
+  "peerDependencies": {
+    "raylib": "^0.14.0",
+    "solid-js": "^1.9.5"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "keywords": [
+    "solid",
+    "solidjs",
+    "raylib",
+    "renderer"
+  ],
+  "license": "ISC"
+}

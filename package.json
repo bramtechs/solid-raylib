@@ -1,24 +1,25 @@
 {
-  "name": "solid-raylib",
-  "version": "1.0.0",
+  "name": "solid-raylib-monorepo",
+  "version": "0.1.0",
   "type": "module",
-  "description": "SolidJS renderer for Raylib",
-  "main": "index.js",
-  "scripts": {
-    "build": "rimraf dist && babel src --out-dir dist",
-    "start": "npm run build && node dist/index.js"
-  },
+  "description": "SolidJS renderer for Raylib - Monorepo",
   "private": true,
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "scripts": {
+    "build": "npm run build --workspaces",
+    "build:core": "npm run build --workspace=solid-raylib-core",
+    "start:demo": "npm run start --workspace=solid-raylib-demo"
+  },
   "workspaces": [
     "packages/*"
   ],
-  "dependencies": {
-    "raylib": "^0.14.0",
-    "solid-js": "^1.9.5"
-  },
+  "keywords": [
+    "solid",
+    "solidjs",
+    "raylib",
+    "renderer"
+  ],
+  "author": "",
+  "license": "ISC",
   "devDependencies": {
     "@babel/cli": "^7.27.0",
     "@babel/core": "^7.26.10",
