@@ -1,5 +1,7 @@
 # Solid Raylib - Monorepo
 
+[![CI](https://github.com/bramtechs/solid-raylib/actions/workflows/ci.yml/badge.svg)](https://github.com/bramtechs/solid-raylib/actions/workflows/ci.yml)
+
 This project demonstrates a custom renderer for SolidJS that integrates with the Raylib graphics library.<br/>
 It is being built as an experimental GUI solution for [Doomhowl Interactive](https://doomhowl-interactive.com).
 
@@ -58,6 +60,21 @@ export default function App() {
 ```
 
 ![](./misc/image.png)
+
+## Continuous Integration
+
+This project uses GitHub Actions for continuous integration and deployment:
+
+- **CI Workflow**: Builds the project on every push to main and pull request
+- **Publish Workflow**: Publishes the package to npm when a new version tag is pushed
+
+To create a new release:
+
+```bash
+# Update version in package.json files
+git tag v0.1.x
+git push origin v0.1.x
+```
 
 ## References
 
