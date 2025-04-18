@@ -1,7 +1,14 @@
 import { VElement } from "./node.js";
+import { parseColor, parseNumber } from "./utils.js";
+import { render } from "./renderer.js";
 import raylib from "raylib/index.js";
 
+/**
+ * @type {VElement|null}
+ */
 let window = null;
+
+let frameCallbacks = new Set();
 
 /**
  * @enum {string}
@@ -30,8 +37,6 @@ function rayHandler(type, ...props) {
           console.log("closed window");
         },
       };
-    default:
-      throw new Error(`Unsupported element type: ${type}`);
   }
 }
 
@@ -54,39 +59,77 @@ export function createRayElement(type, ...props) {
     newNode.parentElement = newElement;
     window = newNode;
   }
+  newNode.content ??= {};
   newNode.content.elementType = type;
   newNode.content.init?.();
-  console.log("created raylib element", newNode);
+  //console.log("created raylib element", newNode);
   return newNode;
 }
 
 export function elementAttributeUpdated(node, name, value) {
   if (node.content.elementType === "window") {
-    let sizeUpdated = false;
     if (name === "title") {
       raylib.SetWindowTitle(value);
-    } else if (name === "width") {
-      node.content.windowWidth = value;
-      sizeUpdated = true;
-    } else if (name === "height") {
-      node.content.windowHeight = value;
-      sizeUpdated = true;
     }
-    if (sizeUpdated) {
-      raylib.SetWindowSize(node.content.windowWidth ?? 1280, node.content.windowHeight ?? 720);
-    }
+    raylib.SetWindowSize(node.attributes.width ?? 1280, node.attributes.height ?? 720);
   }
 }
 
-export function mainLoop() {
-  return new Promise(async (resolve) => {
-    await new Promise((r) => setTimeout(r, 1000));
-    while (!raylib.WindowShouldClose()) {
-      raylib.BeginDrawing();
-      raylib.ClearBackground(raylib.RAYWHITE);
-      raylib.DrawText("Hello, World!", 20, 20, 20, raylib.BLACK);
-      raylib.EndDrawing();
+export async function initSolidRaylib(jsx) {
+  const tree = new VElement("root");
+  const dispose = render(jsx, tree);
+
+  /**
+   * Draws a node and all its children
+   * @param {VElement} node
+   */
+  function drawNode(node) {
+    if (node.content.elementType === "rectangle") {
+      raylib.DrawRectangle(
+        parseNumber(node.attributes.x),
+        parseNumber(node.attributes.y),
+        parseNumber(node.attributes.width),
+        parseNumber(node.attributes.height),
+        parseColor(node.attributes.color),
+      );
+    } else if (node.content.elementType === "fps") {
+      raylib.DrawFPS(parseNumber(node.attributes.x), parseNumber(node.attributes.y));
     }
-    resolve();
-  });
+    node.childNodes.forEach((child) => {
+      drawNode(child);
+    });
+  }
+
+  while (!raylib.WindowShouldClose()) {
+    raylib.BeginDrawing();
+    raylib.ClearBackground(raylib.RAYWHITE);
+
+    let delta = raylib.GetFrameTime();
+    frameCallbacks.forEach((fn) => fn(delta));
+
+    if (window) {
+      drawNode(window);
+    }
+
+    raylib.EndDrawing();
+  }
+
+  console.log("closing window");
+  dispose();
+  console.log("disposed renderer");
+}
+
+/**
+ * Hook for executing functions on each frame
+ * @param {Function} frameFn Function to run every frame
+ * @returns {Function} Cleanup function
+ */
+export function onFrame(frameFn) {
+  if (typeof frameFn !== "function") {
+    throw new Error("onFrame requires a function parameter");
+  }
+  frameCallbacks.add(frameFn);
+  return () => {
+    frameCallbacks.delete(frameFn);
+  };
 }

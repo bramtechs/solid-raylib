@@ -9,6 +9,7 @@ export const {
   createElement,
   createTextNode,
   insert,
+  insertNode,
   spread,
   setProp,
   mergeProps,
@@ -24,11 +25,11 @@ export const {
     elementAttributeUpdated(node, name, value);
   },
   insertNode(parent, node, anchor) {
-    console.log("render", parent, node, node.childNodes[0], node.content);
+    //console.log("render", parent, node, node.childNodes[0], node.content);
     if (!parent) {
       console.log("no parent found!", node, node.content, node.childNodes);
     }
-    console.log("inserting node", node);
+    //console.log("inserting node", node);
     parent.insertBefore(node, anchor);
   },
   isTextNode(node) {

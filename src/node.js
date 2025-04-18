@@ -92,6 +92,9 @@ export class VElement {
    * @returns {string}
    */
   getAttribute(name) {
+    if (!this.attributes[name]) {
+      throw new Error(`Required attribute ${name} not found on node ${this.type}`);
+    }
     return this.attributes[name];
   }
 
@@ -155,7 +158,7 @@ export class VElement {
    */
   insertBefore(node, anchor) {
     // Set this node as the parent to the incoming node
-    console.log("inserting before", node.setParentNode, node.content);
+    //console.log("inserting before", node.setParentNode, node.content);
     node.setParentNode(this);
     node.setParentElement(this.parentElement);
     // ThreeJS: Set the scene from parent node
