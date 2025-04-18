@@ -6,9 +6,9 @@
       "request": "launch",
       "name": "Debug SolidJS Raylib",
       "skipFiles": ["<node_internals>/**"],
-      "program": "${workspaceFolder}/dist/index.js",
+      "program": "${workspaceFolder}/packages/solid-raylib-demo/dist/index.js",
       "preLaunchTask": "npm: build",
-      "outFiles": ["${workspaceFolder}/dist/**/*.js"],
+      "outFiles": ["${workspaceFolder}/packages/solid-raylib-demo/dist/**/*.js"],
       "sourceMaps": true,
       "runtimeArgs": ["--enable-source-maps"],
       "console": "integratedTerminal"

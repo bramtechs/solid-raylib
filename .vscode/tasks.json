@@ -6,7 +6,6 @@
       "script": "start",
       "problemMatcher": [],
       "label": "npm: start",
-      "detail": "npm run build && node dist/index.js",
       "group": {
         "kind": "build",
         "isDefault": true
@@ -17,8 +16,7 @@
       "script": "build",
       "group": "build",
       "problemMatcher": [],
-      "label": "npm: build",
-      "detail": "babel src --out-dir dist"
+      "label": "npm: build"
     },
     {
       "type": "shell",

@@ -6,7 +6,7 @@
   "main": "dist/index.js",
   "private": true,
   "scripts": {
-    "build": "rimraf dist && babel src --out-dir dist",
+    "build": "rimraf dist && babel src --out-dir dist --source-maps",
     "start": "npm run build && node dist/index.js"
   },
   "dependencies": {
