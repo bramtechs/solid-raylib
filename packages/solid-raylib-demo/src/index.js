@@ -1,4 +1,4 @@
 import App from "./App.js";
-import { initSolidRaylib } from "solid-raylib-core";
+import { initSolidRaylib } from "solid-raylib";
 
 initSolidRaylib(App);

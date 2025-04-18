@@ -1,5 +1,5 @@
 import { createSignal } from "solid-js";
-import { onFrame } from "solid-raylib-core";
+import { onFrame } from "solid-raylib";
 
 export default function App() {
   const [count, setCount] = createSignal(0);

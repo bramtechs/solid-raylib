@@ -9,7 +9,7 @@ Very work in progress.
 
 This is a monorepo containing:
 
-- `packages/solid-raylib-core` - The core renderer library
+- `packages/solid-raylib` - The core renderer library
 - `packages/solid-raylib-demo` - A demo application showcasing the renderer
 
 ## Getting Started
@@ -36,7 +36,7 @@ npm run start:demo
 
 ```jsx
 import { createSignal } from "solid-js";
-import { onFrame } from "solid-raylib-core";
+import { onFrame } from "solid-raylib";
 
 export default function App() {
   const [count, setCount] = createSignal(0);

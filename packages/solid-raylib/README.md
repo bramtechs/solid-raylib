@@ -1,19 +1,19 @@
-# solid-raylib-core
+# solid-raylib
 
-A SolidJS renderer for RayLib - Core Library
+A SolidJS renderer for RayLib
 
-This package provides the core functionality for rendering SolidJS components with RayLib.
+This package provides the functionality for rendering SolidJS components with RayLib.
 
 ## Installation
 
 ```bash
-npm install solid-raylib-core
+npm install solid-raylib
 ```
 
 ## Usage
 
 ```jsx
-import { initSolidRaylib } from "solid-raylib-core";
+import { initSolidRaylib } from "solid-raylib";
 import App from "./App";
 
 initSolidRaylib(App);

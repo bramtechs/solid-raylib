@@ -3,7 +3,7 @@
     [
       "babel-preset-solid",
       {
-        "moduleName": "./renderer.js",
+        "moduleName": "solid-raylib",
         "generate": "universal"
       }
     ]

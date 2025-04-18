@@ -1,8 +1,8 @@
 {
-  "name": "solid-raylib-core",
+  "name": "solid-raylib",
   "version": "0.1.0",
   "type": "module",
-  "description": "SolidJS renderer for Raylib - Core Library",
+  "description": "SolidJS renderer for Raylib",
   "main": "dist/index.js",
   "scripts": {
     "build": "rimraf dist && babel src --out-dir dist",

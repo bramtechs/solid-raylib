@@ -12,7 +12,7 @@
   "dependencies": {
     "raylib": "^0.14.0",
     "solid-js": "^1.9.5",
-    "solid-raylib-core": "*"
+    "solid-raylib": "*"
   },
   "keywords": [
     "solid",
