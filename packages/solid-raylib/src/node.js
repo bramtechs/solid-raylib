@@ -169,6 +169,10 @@ export class VElement {
         }
         return this;
       }
+    } else {
+      if (!this.firstChild) {
+        this.firstChild = node;
+      }
     }
 
     this.childNodes = [...this.childNodes, node];

@@ -16,30 +16,6 @@ let window = null;
 const RayElementTypes = ["rectangle", "text"];
 
 /**
- * Handle special cases for initializing Raylib elements
- * @param {RayElementTypes} type
- * @param {any[]} props
- * @returns {any} data
- */
-function rayHandler(type, ...props) {
-  switch (type) {
-    case "window":
-      return {
-        init: () => {
-          const screenWidth = 800;
-          const screenHeight = 450;
-          raylib.InitWindow(screenWidth, screenHeight, "raylib [core] example - basic window");
-          console.log("initialized window");
-        },
-        deinit: () => {
-          raylib.CloseWindow();
-          console.log("closed window");
-        },
-      };
-  }
-}
-
-/**
  * Creates a Raylib element and attaches to virtual node/element system
  * This doesn't add to the node tree, or any scenes
  * @param {RayElementTypes} type
@@ -48,16 +24,35 @@ function rayHandler(type, ...props) {
  */
 export function createRayElement(type, ...props) {
   // Create Raylib element
-  const newElement = rayHandler(type, ...props);
+  let content = {};
 
-  // Create Element/Node class and assign Raylib element
-  const newNode = new VElement(newElement);
+  switch (type) {
+    case "innerText":
+      content.text = props[0];
+      break;
+    case "window":
+      content.init = () => {
+        const screenWidth = 800;
+        const screenHeight = 450;
+        raylib.InitWindow(screenWidth, screenHeight, "raylib [core] example - basic window");
+        console.log("initialized window");
+      };
+      content.deinit = () => {
+        raylib.CloseWindow();
+        console.log("closed window");
+      };
+      break;
+  }
+
+  const newNode = new VElement(content);
+
   // If this is a window object, we set the window property in our node
   // This assures when we add children, they can check the parent for window to add
   if (type === "window") {
-    newNode.parentElement = newElement;
+    newNode.parentElement = content;
     window = newNode;
   }
+
   newNode.content ??= {};
   newNode.content.elementType = type;
   newNode.content.init?.();
@@ -152,6 +147,21 @@ export async function initSolidRaylib(jsx) {
         break;
       case "fps":
         raylib.DrawFPS(parseNumber(node.attributes.x), parseNumber(node.attributes.y));
+        break;
+      case "text":
+        let innerText = "";
+        for (const child of node.childNodes) {
+          if (child.content?.elementType === "innerText") {
+            innerText += child.content.text;
+          }
+        }
+        raylib.DrawText(
+          innerText,
+          parseNumber(node.attributes.x),
+          parseNumber(node.attributes.y),
+          parseNumber(node.attributes.fontSize),
+          parseColor(node.attributes.color),
+        );
         break;
     }
 
