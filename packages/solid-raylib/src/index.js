@@ -1,25 +1,7 @@
 // Core Exports
-export { createRayElement, elementAttributeUpdated, initSolidRaylib, onFrame } from "./ray.js";
-export {
-  render,
-  effect,
-  memo,
-  createComponent,
-  createElement,
-  createTextNode,
-  insert,
-  insertNode,
-  spread,
-  setProp,
-  mergeProps,
-  For,
-  Show,
-  Suspense,
-  SuspenseList,
-  Switch,
-  Match,
-  Index,
-  ErrorBoundary,
-} from "./renderer.js";
+export { createRayElement, elementAttributeUpdated, initSolidRaylib } from "./ray.js";
 export { parseColor, parseNumber, parseBoolean } from "./utils.js";
 export { VElement } from "./node.js";
+
+// Renderer
+export * from "./renderer.js";

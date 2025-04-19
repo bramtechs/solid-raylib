@@ -2,19 +2,18 @@ import { VElement } from "./node.js";
 import { parseColor, parseNumber, parseBoolean } from "./utils.js";
 import { render } from "./renderer.js";
 import raylib from "raylib/index.js";
+import { onCleanup } from "solid-js";
 
 /**
  * @type {VElement|null}
  */
 let window = null;
 
-let frameCallbacks = new Set();
-
 /**
  * @enum {string}
  * @readonly
  */
-const RayElementTypes = ["Rectangle"];
+const RayElementTypes = ["rectangle", "text"];
 
 /**
  * Handle special cases for initializing Raylib elements
@@ -62,7 +61,7 @@ export function createRayElement(type, ...props) {
   newNode.content ??= {};
   newNode.content.elementType = type;
   newNode.content.init?.();
-  //console.log("created raylib element", newNode);
+  console.debug(`created raylib element ${type}`);
   return newNode;
 }
 
@@ -71,8 +70,9 @@ export function elementAttributeUpdated(node, name, value) {
     if (name === "title") {
       raylib.SetWindowTitle(value);
     }
-    raylib.SetWindowSize(node.attributes.width ?? 1280, node.attributes.height ?? 720);
+    raylib.SetWindowSize(parseNumber(node.attributes.width) ?? 1280, parseNumber(node.attributes.height) ?? 720);
   }
+  console.debug(`updated raylib element ${node.content.elementType} attribute ${name} to ${value}`);
 }
 
 export async function initSolidRaylib(jsx) {
@@ -164,9 +164,6 @@ export async function initSolidRaylib(jsx) {
     raylib.BeginDrawing();
     raylib.ClearBackground(raylib.RAYWHITE);
 
-    let delta = raylib.GetFrameTime();
-    frameCallbacks.forEach((fn) => fn(delta));
-
     if (window) {
       drawNode(window);
     }
@@ -177,19 +174,4 @@ export async function initSolidRaylib(jsx) {
   console.log("closing window");
   dispose();
   console.log("disposed renderer");
-}
-
-/**
- * Hook for executing functions on each frame
- * @param {Function} frameFn Function to run every frame
- * @returns {Function} Cleanup function
- */
-export function onFrame(frameFn) {
-  if (typeof frameFn !== "function") {
-    throw new Error("onFrame requires a function parameter");
-  }
-  frameCallbacks.add(frameFn);
-  return () => {
-    frameCallbacks.delete(frameFn);
-  };
 }

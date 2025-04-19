@@ -17,10 +17,7 @@ export function parseColor(color) {
 }
 
 export function parseNumber(it) {
-  if (typeof it === "function") {
-    return it();
-  }
-  return it;
+  return (() => it)();
 }
 
 /**

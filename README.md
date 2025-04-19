@@ -1,7 +1,5 @@
 # Solid Raylib - Monorepo
 
-[![CI](https://github.com/bramtechs/solid-raylib/actions/workflows/ci.yml/badge.svg)](https://github.com/bramtechs/solid-raylib/actions/workflows/ci.yml)
-
 This project demonstrates a custom renderer for SolidJS that integrates with the Raylib graphics library.<br/>
 It is being built as an experimental GUI solution for [Doomhowl Interactive](https://doomhowl-interactive.com).
 
@@ -83,3 +81,7 @@ https://youtu.be/Yi_MJ8cVCCs
 https://github.com/RobLoach/node-raylib
 
 https://github.com/whoisryosuke/solid-three-renderer
+
+https://www.thisdot.co/blog/deep-dive-into-how-signals-work-in-solidjs
+
+https://www.thisdot.co/blog/how-to-create-your-own-custom-renderer-in-solidjs

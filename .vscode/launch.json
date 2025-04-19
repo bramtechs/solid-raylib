@@ -8,7 +8,10 @@
       "skipFiles": ["<node_internals>/**"],
       "program": "${workspaceFolder}/packages/solid-raylib-demo/dist/index.js",
       "preLaunchTask": "npm: build",
-      "outFiles": ["${workspaceFolder}/packages/solid-raylib-demo/dist/**/*.js"],
+      "outFiles": [
+        "${workspaceFolder}/packages/solid-raylib-demo/dist/**/*.js",
+        "${workspaceFolder}/packages/solid-raylib/dist/**/*.js"
+      ],
       "sourceMaps": true,
       "runtimeArgs": ["--enable-source-maps"],
       "console": "integratedTerminal"

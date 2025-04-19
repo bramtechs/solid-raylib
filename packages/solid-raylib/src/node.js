@@ -113,7 +113,6 @@ export class VElement {
     if (parentElement) this.parentElement = parentElement;
   }
 
-  // Methods for exposing private properties to parents
   /**
    * @param {VElement} node
    */
@@ -129,29 +128,8 @@ export class VElement {
   }
 
   /**
-   * @param {VElement} node
-   */
-  appendChild(node) {
-    this.childNodes = [...this.childNodes, node];
-  }
-
-  /**
-   * @param {VElement} node
-   */
-  setParentNode(node) {
-    this.parentNode = node;
-  }
-
-  /**
-   * @param {ThreeParents} node
-   */
-  setParentElement(node) {
-    this.parentElement = node;
-  }
-
-  // Inserts node before the anchor node
-  // If no node is provided, node is inserted as last child
-  /**
+   * Inserts node before the anchor node
+   * If no node is provided, node is inserted as last child
    * @param {VElement} node
    * @param {VElement|null} anchor
    * @returns {VElement}
@@ -159,8 +137,8 @@ export class VElement {
   insertBefore(node, anchor) {
     // Set this node as the parent to the incoming node
     //console.log("inserting before", node.setParentNode, node.content);
-    node.setParentNode(this);
-    node.setParentElement(this.parentElement);
+    node.parentNode = this;
+    node.parentElement = this.parentElement;
     // ThreeJS: Set the scene from parent node
 
     // Find anchor and insert node using anchor index
@@ -169,7 +147,7 @@ export class VElement {
       const anchorIndex = this.childNodes.findIndex((childNode) => childNode === anchor);
 
       if (anchorIndex >= 0) {
-        this.childNodes = this.childNodes.splice(anchorIndex, 0, node);
+        this.childNodes = [...this.childNodes.slice(0, anchorIndex), node, ...this.childNodes.slice(anchorIndex)];
 
         // Update neighbors and inform them of their new sibling
         // Left side
@@ -186,8 +164,9 @@ export class VElement {
         }
 
         // If the index is 0, we need to also update firstChild property
-        if (anchorIndex === 0) this.firstChild = node;
-
+        if (anchorIndex === 0) {
+          this.firstChild = node;
+        }
         return this;
       }
     }
