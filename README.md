@@ -5,6 +5,9 @@ It is being built as an experimental GUI solution for [Doomhowl Interactive](htt
 
 Very work in progress.
 
+> Reactive text nodes are not supported yet. So you can only use a minimal set of SolidJS features.
+> You will need to use the recreated SolidJS components for doing things like conditionals and loops.
+
 ## Project Structure
 
 This is a monorepo containing:

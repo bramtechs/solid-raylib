@@ -16,9 +16,9 @@ export default function App() {
   return (
     <window width={1280} height={720} title="Raylib App">
       <fps x={10} y={10} />
-      <text x={10} y={100} fontSize={20} color="blue">
-        Hello world! {count()}
-      </text>
+      <sr-show when={count() > 1}>
+        <text x={10} y={100} fontSize={20} color="blue" text={"test"} />
+      </sr-show>
     </window>
   );
 }

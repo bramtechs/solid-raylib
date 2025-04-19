@@ -1,8 +1,7 @@
 import { VElement } from "./node.js";
-import { parseColor, parseNumber, parseBoolean } from "./utils.js";
+import { parseColor, parseNumber, parseBoolean, parseString } from "./utils.js";
 import { render } from "./renderer.js";
-import raylib from "raylib/index.js";
-import { onCleanup } from "solid-js";
+import r from "raylib/index.js";
 
 /**
  * @type {VElement|null}
@@ -34,11 +33,11 @@ export function createRayElement(type, ...props) {
       content.init = () => {
         const screenWidth = 800;
         const screenHeight = 450;
-        raylib.InitWindow(screenWidth, screenHeight, "raylib [core] example - basic window");
+        r.InitWindow(screenWidth, screenHeight, "raylib [core] example - basic window");
         console.log("initialized window");
       };
       content.deinit = () => {
-        raylib.CloseWindow();
+        r.CloseWindow();
         console.log("closed window");
       };
       break;
@@ -63,9 +62,9 @@ export function createRayElement(type, ...props) {
 export function elementAttributeUpdated(node, name, value) {
   if (node.content.elementType === "window") {
     if (name === "title") {
-      raylib.SetWindowTitle(value);
+      r.SetWindowTitle(value);
     }
-    raylib.SetWindowSize(parseNumber(node.attributes.width) ?? 1280, parseNumber(node.attributes.height) ?? 720);
+    r.SetWindowSize(parseNumber(node.attributes.width) ?? 1280, parseNumber(node.attributes.height) ?? 720);
   }
   //console.debug(`updated raylib element ${node.content.elementType} attribute ${name} to ${value}`);
 }
@@ -79,6 +78,12 @@ export async function initSolidRaylib(jsx) {
    * @param {VElement} node
    */
   function drawNode(node) {
+    if (node.content.elementType === "sr-show") {
+      if (!parseBoolean(node.attributes.when)) {
+        return;
+      }
+    }
+
     switch (node.content.elementType) {
       case "rectangle":
         if (parseBoolean(node.attributes.lines)) {
@@ -87,7 +92,7 @@ export async function initSolidRaylib(jsx) {
             const lineThickness = parseNumber(node.attributes.lineThickness ?? 1);
             if (lineThickness === 1) {
               // Use the simple API for 1px lines
-              raylib.DrawRectangleLines(
+              r.DrawRectangleLines(
                 parseNumber(node.attributes.x),
                 parseNumber(node.attributes.y),
                 parseNumber(node.attributes.width),
@@ -96,8 +101,8 @@ export async function initSolidRaylib(jsx) {
               );
             } else {
               // Use the advanced API for custom thickness
-              raylib.DrawRectangleLinesEx(
-                raylib.Rectangle(
+              r.DrawRectangleLinesEx(
+                r.Rectangle(
                   parseNumber(node.attributes.x),
                   parseNumber(node.attributes.y),
                   parseNumber(node.attributes.width),
@@ -108,8 +113,8 @@ export async function initSolidRaylib(jsx) {
               );
             }
           } else {
-            raylib.DrawRectangleRoundedLines(
-              raylib.Rectangle(
+            r.DrawRectangleRoundedLines(
+              r.Rectangle(
                 parseNumber(node.attributes.x),
                 parseNumber(node.attributes.y),
                 parseNumber(node.attributes.width),
@@ -123,7 +128,7 @@ export async function initSolidRaylib(jsx) {
           }
         } else {
           if (node.attributes.borderRadius === undefined) {
-            raylib.DrawRectangle(
+            r.DrawRectangle(
               parseNumber(node.attributes.x),
               parseNumber(node.attributes.y),
               parseNumber(node.attributes.width),
@@ -131,8 +136,8 @@ export async function initSolidRaylib(jsx) {
               parseColor(node.attributes.color),
             );
           } else {
-            raylib.DrawRectangleRounded(
-              raylib.Rectangle(
+            r.DrawRectangleRounded(
+              r.Rectangle(
                 parseNumber(node.attributes.x),
                 parseNumber(node.attributes.y),
                 parseNumber(node.attributes.width),
@@ -146,16 +151,18 @@ export async function initSolidRaylib(jsx) {
         }
         break;
       case "fps":
-        raylib.DrawFPS(parseNumber(node.attributes.x), parseNumber(node.attributes.y));
+        r.DrawFPS(parseNumber(node.attributes.x), parseNumber(node.attributes.y));
         break;
       case "text":
-        let innerText = "";
+        let innerText = null;
         for (const child of node.childNodes) {
           if (child.content?.elementType === "innerText") {
+            if (innerText === null) innerText = "";
             innerText += child.content.text;
           }
         }
-        raylib.DrawText(
+        innerText ??= parseString(node.attributes.text);
+        r.DrawText(
           innerText,
           parseNumber(node.attributes.x),
           parseNumber(node.attributes.y),
@@ -171,15 +178,15 @@ export async function initSolidRaylib(jsx) {
   }
 
   (async () => {
-    while (!raylib.WindowShouldClose()) {
-      raylib.BeginDrawing();
-      raylib.ClearBackground(raylib.RAYWHITE);
+    while (!r.WindowShouldClose()) {
+      r.BeginDrawing();
+      r.ClearBackground(r.RAYWHITE);
 
       if (window) {
         drawNode(window);
       }
 
-      raylib.EndDrawing();
+      r.EndDrawing();
 
       // Do not remove this delay or NodeJS setTimeouts and setIntervals will never run!!!
       await new Promise((resolve) => setTimeout(resolve, 16));

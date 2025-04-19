@@ -21,10 +21,12 @@ export function createSignal(initialValue) {
  * @param {} fn
  * @returns
  */
-export function createEffect(fn) {
+export function createEffect(fn, initial = undefined) {
   current = fn;
-  fn();
+  fn(initial);
   current = undefined;
 }
 
+export const createComputed = createEffect;
+export const createRenderEffect = createComputed;
 export const effect = createEffect;

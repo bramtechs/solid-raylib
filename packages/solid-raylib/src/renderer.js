@@ -1,6 +1,5 @@
 import { createRenderer } from "solid-js/universal";
 import { createRayElement, elementAttributeUpdated } from "./ray.js";
-import { createEffect } from "./signals.js";
 
 /**
  * @typedef {import("./node").VElement} VElement
@@ -29,15 +28,6 @@ export const {
    */
   createElement(type) {
     return createRayElement(type);
-  },
-
-  /**
-   * Creates a Raylib text node
-   * @param {string} value - Text value
-   * @returns {VElement} Virtual Raylib text node
-   */
-  createTextNode(value) {
-    return createRayElement("innerText", value);
   },
 
   /**

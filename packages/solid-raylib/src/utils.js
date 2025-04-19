@@ -17,7 +17,17 @@ export function parseColor(color) {
 }
 
 export function parseNumber(it) {
-  return typeof it === "function" ? it() : it;
+  while (typeof it === "function") {
+    it = it();
+  }
+  return Number.parseFloat(it);
+}
+
+export function parseString(it) {
+  while (typeof it === "function") {
+    it = it();
+  }
+  return String(it);
 }
 
 /**
