@@ -17,7 +17,7 @@ export function parseColor(color) {
 }
 
 export function parseNumber(it) {
-  return (() => it)();
+  return typeof it === "function" ? it() : it;
 }
 
 /**

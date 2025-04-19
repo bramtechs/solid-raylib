@@ -72,7 +72,7 @@ export function elementAttributeUpdated(node, name, value) {
     }
     raylib.SetWindowSize(parseNumber(node.attributes.width) ?? 1280, parseNumber(node.attributes.height) ?? 720);
   }
-  console.debug(`updated raylib element ${node.content.elementType} attribute ${name} to ${value}`);
+  //console.debug(`updated raylib element ${node.content.elementType} attribute ${name} to ${value}`);
 }
 
 export async function initSolidRaylib(jsx) {
@@ -160,18 +160,23 @@ export async function initSolidRaylib(jsx) {
     });
   }
 
-  while (!raylib.WindowShouldClose()) {
-    raylib.BeginDrawing();
-    raylib.ClearBackground(raylib.RAYWHITE);
+  (async () => {
+    while (!raylib.WindowShouldClose()) {
+      raylib.BeginDrawing();
+      raylib.ClearBackground(raylib.RAYWHITE);
 
-    if (window) {
-      drawNode(window);
+      if (window) {
+        drawNode(window);
+      }
+
+      raylib.EndDrawing();
+
+      // Do not remove this delay or NodeJS setTimeouts and setIntervals will never run!!!
+      await new Promise((resolve) => setTimeout(resolve, 16));
     }
 
-    raylib.EndDrawing();
-  }
-
-  console.log("closing window");
-  dispose();
-  console.log("disposed renderer");
+    console.log("closing window");
+    dispose();
+    console.log("disposed renderer");
+  })();
 }

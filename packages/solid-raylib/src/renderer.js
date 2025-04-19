@@ -11,7 +11,6 @@ import { createRayElement, elementAttributeUpdated } from "./ray.js";
  */
 export const {
   render,
-  effect,
   memo,
   createComponent,
   createElement,
@@ -138,8 +137,3 @@ export const {
     node.prevSibling = previousSibling;
   },
 });
-
-/**
- * Re-export built-in Solid.js components
- */
-export { For, Show, Suspense, SuspenseList, Switch, Match, Index, ErrorBoundary } from "solid-js";
